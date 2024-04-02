@@ -1,0 +1,213 @@
+{% extends "index.html" %}
+{% comment %} Template tag base:start {% endcomment %}
+
+{% load static %}
+{% block title %}Update Patient{% endblock %}
+{% block header_name %}Update Patient{% endblock %}
+{% block header_name_sub %}
+    <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
+        <li class="breadcrumb-item">
+            <a href="" class="text-muted">Update</a>
+        </li>
+    </ul>
+{% endblock header_name_sub %}
+
+{% comment %} Template tag base:end {% endcomment %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+{% block content %}
+    <div class="content  d-flex flex-column flex-column-fluid" id="kt_content">
+        <div class="d-flex flex-column-fluid">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <form method="post" id="update_patient">
+                            {% csrf_token %}
+                            <input type="hidden" class="form-control" name="id" value="{{ data.id }}"/>
+                            <div class="card card-custom mb-4">
+                                <div class="card-header">
+                                    <div class="card-title">
+                                        <h5 class="card-label">
+                                            <i class="fas fa-user-check icon-lg mr-1"></i>
+                                            Basic Details
+                                        </h5>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="form-group row">
+                                        <div class="col-lg-6">
+                                            <label>Name *</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend"><span class="input-group-text"><i
+                                                        class="fas fa-user"></i></span></div>
+                                                <input type="text" class="form-control" name="update_name"
+                                                       value="{{ data.name }}"/>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <label>Gender *</label>
+                                            <select class="form-control selectpicker" data-size="4" name="update_gender"
+                                                    title="Nothing Selected">
+                                                <option {% if data.gender == 'Male' %}selected{% endif %}>Male</option>
+                                                <option {% if data.gender == 'Female' %}selected{% endif %}>Female
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-lg-4">
+                                            <label>Birthdate</label>
+                                            <div class="input-group date mb-2">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        <i class="fas fa-birthday-cake"></i>
+                                                    </span>
+                                                </div>
+                                                <input type="text" class="form-control" id="patient_birthdate"
+                                                       name="update_birthdate" onchange="AGE()" readonly
+                                                       value="{{ data.birthdate|date:'Y-m-d'|default_if_none:'' }}"/>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <label>Age *</label>
+                                            <input type="number" class="form-control" name="update_age" id="age"
+                                                   value="{{ data.age }}"/>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <label>Marital Status *</label>
+                                            <select class="form-control selectpicker" data-size="4"
+                                                    name="update_marital_status" title="Nothing Selected">
+                                                <option {% if data.marital_status == 'Single' %}selected{% endif %}>
+                                                    Single
+                                                </option>
+                                                <option {% if data.marital_status == 'Married' %}selected{% endif %}>
+                                                    Married
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-lg-6">
+                                            <label>Mobile No *</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend"><span class="input-group-text"><i
+                                                        class="fas fa-phone-volume"></i></span></div>
+                                                <input type="text" name="update_phone" class="form-control"
+                                                       value="{{ data.mobile_no }}"/>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <label>Email *</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend"><span class="input-group-text"><i
+                                                        class="fas fa-envelope-open"></i></span></div>
+                                                <input type="email" class="form-control" name="update_email"
+                                                       value="{{ data.email }}"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-lg-4">
+                                            <label>Category *</label>
+                                            <select class="form-control selectpicker" data-size="4"
+                                                    name="update_category"
+                                                    data-live-search="true" title="Nothing Selected">
+                                                {% for cat in category_list %}
+                                                    <option value="{{ cat.id }}"
+                                                            {% if data.category_id == cat.id %}selected{% endif %}>{{ cat.category }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <div class="col-lg-2">
+                                            <label>Blood Group</label>
+                                            <select class="form-control selectpicker" data-size="4"
+                                                    name="update_blood_group" title="Nothing Selected">
+                                                <option {% if data.blood_group ==  'A+' %}selected{% endif %}>A+
+                                                </option>
+                                                <option {% if data.blood_group ==  'A-' %}selected{% endif %}>A-
+                                                </option>
+                                                <option {% if data.blood_group ==  'B+' %}selected{% endif %}>B+
+                                                </option>
+                                                <option {% if data.blood_group ==  'B-' %}selected{% endif %}>B-
+                                                </option>
+                                                <option {% if data.blood_group ==  'O+' %}selected{% endif %}>O+
+                                                </option>
+                                                <option {% if data.blood_group ==  'O-' %}selected{% endif %}>O-
+                                                </option>
+                                                <option {% if data.blood_group ==  'AB+' %}selected{% endif %}>AB+
+                                                </option>
+                                                <option {% if data.blood_group ==  'AB-' %}selected{% endif %}>AB-
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <div class="col-lg-2">
+                                            <label>Blood Pressure</label>
+                                            <input type="number" class="form-control" name="update_blood_pressure"
+                                                   value="{{ data.blood_pressure|default_if_none:'' }}"/>
+                                        </div>
+                                        <div class="col-lg-2">
+                                            <label>Height</label>
+                                            <input type="number" class="form-control" name="update_height"
+                                                   value="{{ data.height|default_if_none:'' }}" step="any"/>
+                                        </div>
+                                        <div class="col-lg-2">
+                                            <label>Weight</label>
+                                            <input type="number" class="form-control" name="update_weight"
+                                                   value="{{ data.weight|default_if_none:'' }}" step="any"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-lg-12">
+                                            <label>Address</label>
+                                            <textarea class="form-control" id="kt_autosize_1" rows="3"
+                                                      name="update_address">{{ data.address|default_if_none:'' }}</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="d-flex justify-content-end">
+                                        <button type="submit"
+                                                class="btn btn-light-success btn-lg mr-2 font-weight-bold">
+                                            Update
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+</body>
+{% block js %}
+    <script src="{% static "js/validation/update_patient_validation.js" %}"></script>
+    <script src="{% static "js/ajax/patient.js" %}"></script>
+    <script type="text/javascript">
+        function AGE() {
+            var n = document.getElementById('patient_birthdate').value;
+            var bd = new Date(n);
+
+            var cd = new Date();
+
+            var a = (cd.getFullYear() - bd.getFullYear());
+
+            if (cd.getMonth() < bd.getMonth() || cd.getMonth() === bd.getMonth() && cd.getDate() < bd.getDate()) {
+                a = a - 1;
+            }
+            document.getElementById('age').value = a;
+            update_patient_validation.validateField('update_age');
+        }
+    </script>
+{% endblock js %}
+
+</html>

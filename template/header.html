@@ -1,0 +1,128 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<div id="kt_header" class="header header-fixed">
+    <!--begin::Container-->
+    <div class="container-fluid d-flex align-items-stretch justify-content-end">
+        <!--begin::Header Menu Wrapper-->
+        <!--end::Header Menu Wrapper-->
+        <!--begin::Topbar-->
+        <div class="topbar">
+            <!--begin::Search-->
+
+            <!--end::Search-->
+
+            <!--begin::Notifications-->
+
+
+            <!--end::Notifications-->
+
+            <!--begin::Quick Actions-->
+
+            <!--end::Quick Actions-->
+
+            <!--begin::Quick panel-->
+
+            <!--end::Quick panel-->
+
+            <!--begin::Chat-->
+
+            <!--end::Chat-->
+            <!--begin::Languages-->
+
+            <!--end::Languages-->
+            <!--begin::User-->
+            <div class="dropdown">
+
+                <!--begin::Toggle-->
+                <div class="topbar-item" data-toggle="dropdown" data-offset="0px,0px">
+                    <div class="btn btn-icon w-auto btn-clean d-flex align-items-center btn-lg px-2">
+                        <span class="text-muted font-weight-bold font-size-base d-none d-md-inline mr-1">Hi,</span>
+                        <span class="text-dark-50 font-weight-bolder font-size-base d-none d-md-inline mr-3">{{ request.session.name }}</span>
+                        <span class="symbol symbol-35 symbol-light-success">
+                            <span class="symbol-label font-size-h5 font-weight-bold">{{ request.session.name|make_list|first }}</span>
+                        </span>
+                    </div>
+                </div>
+
+                <!--end::Toggle-->
+
+                <!--begin::Dropdown-->
+                <div class="dropdown-menu p-0 m-0 dropdown-menu-right dropdown-menu-anim-up dropdown-menu-lg p-0">
+                    <div class="d-flex align-items-center p-6 rounded-top">
+
+                        <!--begin::Symbol-->
+
+                        <div class="symbol symbol-md bg-light-primary symbol-50 symbol-light-success mr-3 flex-shrink-0">
+                            <span class="symbol-label font-size-h2 font-weight-bold">{{ request.session.name|make_list|first }}</span>
+                        </div>
+
+                        <!--end::Symbol-->
+
+                        <!--begin::Text-->
+                        <div>
+                            <div class="text-dark m-0 flex-grow-1 mr-3 font-size-h5 font-weight-bold">{{ request.session.name }}</div>
+                            <div class="text-muted">{{ request.session.role }}</div>
+                        </div>
+                        <!--end::Text-->
+                    </div>
+                    <div class="separator separator-solid"></div>
+                    <!--end::Header-->
+
+                    <!--begin::Nav-->
+                    <div class="navi navi-spacer-x-0">
+
+                        <!--begin::Item-->
+                        <a href="{% url 'Profile:personal-info' %}" class="navi-item px-8 py-2">
+                            <div class="navi-link">
+                                <div class="navi-icon mr-3">
+                                    <i class="fas fa-user-circle icon-2x text-success"></i>
+                                </div>
+                                <div class="navi-text">
+                                    <div class="font-weight-bold">My Profile</div>
+                                    <div class="text-muted">Account settings and more</div>
+                                </div>
+                            </div>
+                        </a>
+                        <!--end::Item-->
+{#                        <div class="separator separator-solid"></div>#}
+                         <!--begin::Item-->
+{#                        <a href="{% url 'Profile:change-password'%}" class="navi-item px-8 py-2">#}
+{#                            <div class="navi-link">#}
+{#                                <div class="navi-icon mr-3">#}
+{#                                    <i class="fas fa-key icon-2x text-info"></i>#}
+{#                                </div>#}
+{#                                <div class="navi-text">#}
+{#                                    <div class="font-weight-bold">Change Password</div>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </a>#}
+                        <!--end::Item-->
+
+                        <!--begin::Footer-->
+                        <div class="navi-separator"></div>
+                        <div class="navi-footer px-7">
+                            <a href="{% url 'Authentication:logout' %}" class="btn btn-light-danger font-weight-bold">Sign
+                                Out</a>
+                        </div>
+                        <!--end::Footer-->
+                    </div>
+                </div>
+                <!--end::Dropdown-->
+            </div>
+            <!--end::User-->
+        </div>
+        <!--end::Topbar-->
+    </div>
+    <!--end::Container-->
+</div>
+</body>
+</html>

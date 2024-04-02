@@ -1,0 +1,148 @@
+{% extends "index.html" %}
+{% comment %} Template tag base:start {% endcomment %}
+
+{% load static %}
+{% block title %}Prescription List{% endblock %}
+{% block header_name %}Prescription List{% endblock %}
+{% block header_name_sub %}
+    <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
+        <li class="breadcrumb-item">
+            <a href="" class="text-muted">List</a>
+        </li>
+    </ul>
+{% endblock header_name_sub %}
+
+{% comment %} Template tag base:end {% endcomment %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+{% block content %}
+    <div class="content  d-flex flex-column flex-column-fluid" id="kt_content">
+        <div class="d-flex flex-column-fluid">
+            <!--begin::Container-->
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card card-custom mb-2">
+                            <div class="card-header ">
+                                <div class="card-title">
+                                    <h5 class="card-label">
+                                        <i class="fas fa-edit icon-lg mr-1"></i>
+                                        Select Ground
+                                    </h5>
+                                </div>
+                            </div>
+                            <form action="" method="POST">
+                                {% csrf_token %}
+                                <div class="card-body">
+                                    <div class="form-group row flex-row justify-content-center">
+                                        <div class="col-lg-4">
+                                            <label>Doctor *</label>
+                                            <select class="form-control selectpicker" data-live-search="true"
+                                                    data-size="4" data-dropup-auto="false" name="doctor">
+                                                <option value="">Select</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <label>Patient *</label>
+                                            <select class="form-control selectpicker" data-live-search="true"
+                                                    data-size="4" name="patient">
+                                                <option value="">Select</option>
+                                                <option value="A+">A+</option>
+                                                <option value="A-">A-</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="d-flex justify-content-end">
+                                        <button type="button"
+                                                class="btn btn-light-success btn-lg mr-2 font-weight-bold">Filter
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="card card-custom" id="table">
+                            <div class="card-header ">
+                                <div class="card-title">
+                                    <h5 class="card-label">
+                                        <i class="fas fa-list icon-lg mr-1"></i>
+                                        Prescription List
+                                    </h5>
+                                </div>
+                                <div class="card-toolbar">
+                                    <a href="javaScript:void(0)" class="btn btn-light-warning btn-icon btn-lg mr-2"
+                                       id="export_print" data-toggle="tooltip" data-placement="top" title="Print"
+                                       data-theme="dark">
+                                        <i class="fas fa-print"></i>
+                                    </a>
+                                    <a href="javaScript:void(0)" class="btn btn-light-primary btn-icon btn-lg mr-2"
+                                       id="export_pdf" data-toggle="tooltip" data-placement="top" title="PDF"
+                                       data-theme="dark">
+                                        <i class="fas fa-file-pdf"></i>
+                                    </a>
+                                    <a href="javaScript:void(0)" class="btn btn-light-success btn-icon btn-lg mr-2"
+                                       id="export_excel" data-toggle="tooltip" data-placement="top" title="Excel"
+                                       data-theme="dark">
+                                        <i class="fas fa-file-excel"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <table class="table table-separate table-head-custom text-center" id="prescription">
+                                    <thead>
+                                    <tr>
+                                        <th>Prescription ID</th>
+                                        <th>Doctor Name</th>
+                                        <th>Patient Name</th>
+                                        <th>Date</th>
+                                        <th>Prescription</th>
+                                        <th>Action</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>Keiran</td>
+                                        <td>Gabbie Carter</td>
+                                        <td>20/10/2020</td>
+                                        <td>
+{#                                            <a href="#" class="btn btn-icon btn-outline-info btn-sm mr-2"#}
+{#                                               data-toggle="tooltip" data-placement="top" title="View Prescription"#}
+{#                                               data-theme="dark"><i class="fas fa-eye"></i></a>#}
+                                            Prescription Here....
+                                        </td>
+                                        <td>
+                                            <a href="{% url 'Prescription:add' %}"
+                                               class="btn btn-icon btn-outline-success btn-sm mr-2"
+                                               data-toggle="tooltip" data-placement="top" title="Edit"
+                                               data-theme="dark"><i class="fas fa-pen"></i></a>
+                                            <a href="#" class="btn btn-icon btn-outline-danger btn-sm mr-2"
+                                               data-toggle="tooltip" data-placement="top" title="Delete"
+                                               data-theme="dark" id="delete"><i class="fas fa-trash"></i></a>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+</body>
+{% block js %}
+    <script src="{% static "js/table/prescription_list.js" %}"></script>
+{% endblock js %}
+
+</html>

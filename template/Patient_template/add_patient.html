@@ -1,0 +1,239 @@
+{% extends "index.html" %}
+{% comment %} Template tag base:start {% endcomment %}
+
+{% load static %}
+{% block title %}Create Patient{% endblock %}
+{% block header_name %}Create Patient{% endblock %}
+{% block header_name_sub %}
+    <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
+        <li class="breadcrumb-item">
+            <a href="" class="text-muted">Create</a>
+        </li>
+    </ul>
+{% endblock header_name_sub %}
+
+{% comment %} Template tag base:end {% endcomment %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+{% block content %}
+    <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+        <div class="d-flex flex-column-fluid">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <form method="post" id="patient">
+                            {% csrf_token %}
+                            <div class="card card-custom mb-4">
+                                <div class="card-header">
+                                    <div class="card-title">
+                                        <h5 class="card-label">
+                                            <i class="fas fa-user-check icon-lg mr-1"></i>
+                                            Basic Details
+                                        </h5>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="form-group row">
+                                        <div class="col-lg-6">
+                                            <label>Name *</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend"><span class="input-group-text">
+                                                    <i class="fas fa-user"></i></span>
+                                                </div>
+                                                <input type="text" class="form-control" name="name"/>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <label>Gender *</label>
+                                            <select class="form-control selectpicker" data-size="4" name="gender" title="Nothing Selected">
+                                                <option>Male</option>
+                                                <option>Female</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-lg-4">
+                                            <label>Birthdate</label>
+                                            <div class="input-group date mb-2">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        <i class="fas fa-birthday-cake"></i>
+                                                    </span>
+                                                </div>
+                                                <input type="text" class="form-control" id="patient_birthdate"
+                                                       name="birthdate" onchange="AGE()" readonly/>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <label>Age *</label>
+                                            <input type="number" class="form-control" name="age" id="age" value=""/>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <label>Marital Status *</label>
+                                            <select class="form-control selectpicker" data-size="4"
+                                                    name="marital_status" title="Nothing Selected">
+                                                <option>Single</option>
+                                                <option>Married</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-lg-6">
+                                            <label>Mobile No *</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend"><span class="input-group-text"><i
+                                                        class="fas fa-phone-volume"></i></span></div>
+                                                <input type="text" name="phone" class="form-control"/>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <label>Email *</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend"><span class="input-group-text"><i
+                                                        class="fas fa-envelope-open"></i></span></div>
+                                                <input type="email" class="form-control" name="email"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-lg-4">
+                                            <label>Category *</label>
+                                            <select class="form-control selectpicker" data-size="4" name="category"
+                                                    data-live-search="true" title="Nothing Selected">
+                                                {% for cat in category_list %}
+                                                    <option value="{{ cat.id }}">{{ cat.category }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <div class="col-lg-2">
+                                            <label>Blood Group</label>
+                                            <select class="form-control selectpicker" data-size="4" name="blood_group" title="Nothing Selected">
+                                                <option>A+</option>
+                                                <option>A-</option>
+                                                <option>B+</option>
+                                                <option>B-</option>
+                                                <option>O+</option>
+                                                <option>O-</option>
+                                                <option>AB+</option>
+                                                <option>AB-</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-lg-2">
+                                            <label>Blood Pressure</label>
+                                            <input type="number" class="form-control" name="blood_pressure"/>
+                                        </div>
+                                        <div class="col-lg-2">
+                                            <label>Height</label>
+                                            <input type="number" class="form-control" name="height" step="any"/>
+                                        </div>
+                                        <div class="col-lg-2">
+                                            <label>Weight</label>
+                                            <input type="number" class="form-control" name="weight" step="any"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-lg-12">
+                                            <label>Address</label>
+                                            <textarea class="form-control" id="kt_autosize_1" rows="3"
+                                                      name="address"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card card-custom">
+                                <div class="card-header ">
+                                    <div class="card-title">
+                                        <h5 class="card-label">
+                                            <i class="fas fa-user-lock icon-lg mr-1"></i>
+                                            Login Details
+                                        </h5>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="form-group row">
+                                        <div class="col-lg-6" id="username">
+                                            <label>Username *</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        <i class="fas fa-user-lock"></i>
+                                                    </span>
+                                                </div>
+                                                <input type="text" class="form-control" name="username"/>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <label>Password *</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        <i class="fas fa-unlock-alt"></i>
+                                                    </span>
+                                                </div>
+                                                <input type="password" id="password" class="form-control"
+                                                       name="password"/>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <label>Retype Password *</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        <i class="fas fa-unlock-alt"></i>
+                                                    </span>
+                                                </div>
+                                                <input type="password" id="confirm_password" class="form-control"
+                                                       name="retype_password"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="d-flex justify-content-end">
+                                        <button type="submit"
+                                                class="btn btn-light-success btn-lg mr-2 font-weight-bold">
+                                            Save
+                                        </button>
+                                        <button type="reset"
+                                                class="btn btn-light-danger btn-lg font-weight-bold">Cancel
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+</body>
+{% block js %}
+    <script src="{% static "js/validation/patient_validation.js" %}"></script>
+    <script src="{% static "js/ajax/patient.js" %}"></script>
+    <script type="text/javascript">
+        function AGE() {
+            var n = document.getElementById('patient_birthdate').value;
+            var bd = new Date(n);
+
+            var cd = new Date();
+
+            var a = (cd.getFullYear() - bd.getFullYear());
+
+            if (cd.getMonth() < bd.getMonth() || cd.getMonth() === bd.getMonth() && cd.getDate() < bd.getDate()) {
+                a = a - 1;
+            }
+            document.getElementById('age').value = a;
+            patient_create_validation.validateField('age');
+        }
+    </script>
+{% endblock js %}
+</html>
