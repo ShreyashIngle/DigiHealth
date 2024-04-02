@@ -18,7 +18,7 @@ def loginpage(request):
         return redirect(reverse('Dashboard:dashboard'))
     else:
         global_list = Global.objects.get(pk=1)
-        request.session['h_name'] = global_list.hospital
+        request.session['h_name'] = "DigiHealth "
         request.session['v_name'] = "DigiHealth"
         request.session['link1'] = global_list.link1
         request.session['link2'] = global_list.link2
