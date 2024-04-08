@@ -5,7 +5,7 @@ from django.shortcuts import render
 from Appointment.models import Appointment
 from Appointment.tasks import AppointmentCreate, AppointmentConfirm, AppointmentClosed
 from Employee.models import Employee
-from Genetic.decorators import login_required, role_required
+from Digihealth.decorators import login_required, role_required
 from Patient.models import Patient
 from Schedule.models import Schedule
 

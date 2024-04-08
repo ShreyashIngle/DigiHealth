@@ -39,11 +39,11 @@ class EmployeeCase():
         print('Creating Doctor Account....')
 
         Employee.objects.create(name='Camille Roob', gender='Female', blood_group='AB+', birthdate='2002-05-02',
-                                mobile_no="+917458365415", email='doctor@genetic.com', marital_status='Single',
+                                mobile_no="+917458365415", email='doctor@digihealth.com', marital_status='Single',
                                 address='131 Avenue A, North Dakota, New York - 10009', role=2, designation='Doctor',
                                 joining_date=current_date)
 
-        add = CustomUser.objects.create_user(username='doctor', password='doctor@123', email='doctor@genetic.com', role=2,
+        add = CustomUser.objects.create_user(username='doctor', password='doctor@123', email='doctor@digihealth.com', role=2,
                                              aid=3)
         add.save()
 
@@ -52,10 +52,10 @@ class EmployeeCase():
         print('Creating Receptionist Account....')
 
         Employee.objects.create(name='Jovanny Quigley', gender='Male', blood_group='A-', birthdate='2002-05-02',
-                                mobile_no="+918160521030", email='receptionist@genetic.com', marital_status='Single',
+                                mobile_no="+918160521030", email='receptionist@digihealth.com', marital_status='Single',
                                 address='488 S Mills Rd, Ventura, California - 93003', role=3, designation='Receptionist',
                                 joining_date=current_date)
 
-        add = CustomUser.objects.create_user(username='receptionist', password='recept@123', email='receptionist@genetic.com', role=3,
+        add = CustomUser.objects.create_user(username='receptionist', password='recept@123', email='receptionist@digihealth.com', role=3,
                                              aid=4)
         add.save()

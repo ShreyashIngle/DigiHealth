@@ -2,7 +2,7 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect
 
 from Employee.models import Employee
-from Genetic.decorators import login_required, role_required
+from Digihealth.decorators import login_required, role_required
 from Schedule.models import Schedule
 
 

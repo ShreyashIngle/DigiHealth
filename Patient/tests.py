@@ -19,10 +19,10 @@ class PatientCase():
     def patientcase(self):
         print('Creating Patient....')
         Patient.objects.create(name='Tyson Dietrich', gender='Male', birthdate='2001-07-07', age=21, marital_status='Married',
-                        mobile_no='+918741256004', email='patient@genetic.com', category_id=1, blood_group='O+',
+                        mobile_no='+918741256004', email='patient@digihealth.com', category_id=1, blood_group='O+',
                         blood_pressure=88, height=153, weight=50, address='India')
         
-        add = CustomUser.objects.create_user(username='patient', password='patient@123', email='patient@genetic.com', role=4,
+        add = CustomUser.objects.create_user(username='patient', password='patient@123', email='patient@digihealth.com', role=4,
                                                 aid=1)
         add.save()
 

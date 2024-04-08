@@ -14,7 +14,7 @@ var KTGoogleMapsDemo = function() {
         map.addMarker({
             lat: 22.3068135186707,
             lng: 70.76779844914232,
-            title: 'Genetic Hospital',
+            title: 'Digihealth Hospital',
             click: function(e) {
                 alert('You clicked in this marker');
             }

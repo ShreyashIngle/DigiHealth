@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect
 from Appointment.models import Appointment
 from Authentication.models import CustomUser
 from Employee.models import Employee
-from Genetic.decorators import login_required, role_required
+from Digihealth.decorators import login_required, role_required
 
 
 # Create your views here.

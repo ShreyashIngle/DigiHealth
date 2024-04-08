@@ -1,4 +1,4 @@
-from Genetic.decorators import login_required, role_required
+from Digihealth.decorators import login_required, role_required
 from django.http import JsonResponse
 from django.shortcuts import render
 from Settings.models import Global, Api_Settings

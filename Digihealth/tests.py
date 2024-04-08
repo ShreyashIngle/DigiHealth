@@ -18,7 +18,7 @@ load_dotenv(os.path.join(BASE_DIR, '.env'))
 class MainTestCase(unittest.TestCase):
     def MainCase(self):
         Global.objects.create(hospital="Genetic Hospital", visible="Genetic", contact="+919534587463",
-                              email="contact@genetic.com",
+                              email="contact@digihealth.com",
                               address="Enter your address..", facebook="https://facebook.com",
                               link1="https://aboutus.com",
                               link2="https://teams.com", link3="https://contactus.com")

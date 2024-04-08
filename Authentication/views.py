@@ -6,7 +6,7 @@ from django.shortcuts import render, redirect, reverse
 from Authentication.models import CustomUser
 from Authentication.tasks import ForgotPassword
 from Employee.models import Employee
-from Genetic.decorators import login_required
+from Digihealth.decorators import login_required
 from Patient.models import Patient
 from Settings.models import Global
 

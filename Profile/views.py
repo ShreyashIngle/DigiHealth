@@ -2,7 +2,7 @@ from django.shortcuts import render
 
 from Authentication.models import CustomUser
 from Employee.models import Employee
-from Genetic.decorators import login_required
+from Digihealth.decorators import login_required
 from Patient.models import Patient
 
 
