@@ -1,0 +1,170 @@
+{% extends "Profile_template/profile.html" %}
+{% comment %} Template tag base:start {% endcomment %}
+
+{% load static %}
+{% block title %}Personal Info{% endblock %}
+{% block header_name %}Profile{% endblock %}
+{% block header_name_sub %}
+    <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
+        <li class="breadcrumb-item">
+            <a href="" class="text-muted">Settings</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="" class="text-muted">Profile</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="" class="text-muted">Personal</a>
+        </li>
+    </ul>
+{% endblock header_name_sub %}
+
+{% comment %} Template tag base:end {% endcomment %}
+<!DOCTYPE html>
+
+<html lang="en">
+<!--begin::Head-->
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+<!--begin::Content-->
+
+{% block inner_content %}
+    <div class="flex-row-fluid ml-lg-8">
+        <!--begin::Card-->
+        <div class="card card-custom card-stretch">
+            <!--begin::Header-->
+            <div class="card-header py-3">
+                <div class="card-title align-items-start flex-column">
+                    <h3 class="card-label font-weight-bolder text-dark">Personal Information
+                    </h3>
+                    <span class="text-muted font-weight-bold font-size-sm mt-1">See your
+                                                    personal informaiton</span>
+                </div>
+            </div>
+            <!--end::Header-->
+
+            <!--begin::Form-->
+            <form class="form">
+                <!--begin::Body-->
+                <div class="card-body">
+                    <div class="row">
+                        <label class="col-xl-3"></label>
+                        <div class="col-lg-9 col-xl-6">
+                            <h5 class="font-weight-bold mb-6">Customer Info:</h5>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-xl-3 col-lg-3 col-form-label">Full Name</label>
+                        <div class="col-lg-9 col-xl-6">
+                            <input class="form-control form-control-lg form-control-solid"
+                                   type="text" value="{{ personal.name }}" readonly/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-xl-3 col-lg-3 col-form-label">Gender</label>
+                        <div class="col-lg-9 col-xl-6">
+                            <input class="form-control form-control-lg form-control-solid"
+                                   type="text" value="{{ personal.gender }}" readonly/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-xl-3 col-lg-3 col-form-label">Birthday</label>
+                        <div class="col-lg-9 col-xl-6">
+                            <input class="form-control form-control-lg form-control-solid"
+                                   type="text" value="{{ personal.birthdate }}" readonly/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-xl-3 col-lg-3 col-form-label">Marital Status</label>
+                        <div class="col-lg-9 col-xl-6">
+                            <input class="form-control form-control-lg form-control-solid"
+                                   type="text" value="{{ personal.marital_status }}" readonly/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-xl-3 col-lg-3 col-form-label">Blood Group</label>
+                        <div class="col-lg-9 col-xl-6">
+                            <div class="input-group input-group-lg input-group-solid">
+                                <input type="text"
+                                       class="form-control form-control-lg form-control-solid"
+                                       value="{{ personal.blood_group }}" readonly/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label class="col-xl-3"></label>
+                        <div class="col-lg-9 col-xl-6">
+                            <h5 class="font-weight-bold mt-10 mb-6"> Office Details</h5>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-xl-3 col-lg-3 col-form-label">Role</label>
+                        <div class="col-lg-9 col-xl-6">
+                            <div class="input-group input-group-lg input-group-solid">
+                                <input type="text"
+                                       class="form-control form-control-lg form-control-solid"
+                                       value="{% if personal.role == 1 %}Admin{% endif %}{% if personal.role == 2 %}Doctor{% endif %}{% if personal.role == 3 %}Receptionist{% endif %}"
+                                       readonly/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-xl-3 col-lg-3 col-form-label">Designations</label>
+                        <div class="col-lg-9 col-xl-6">
+                            <div class="input-group input-group-lg input-group-solid">
+                                <input type="text"
+                                       class="form-control form-control-lg form-control-solid"
+                                       value="{{ personal.designation }}" readonly/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-xl-3 col-lg-3 col-form-label">Joining Date</label>
+                        <div class="col-lg-9 col-xl-6">
+                            <div class="input-group input-group-lg input-group-solid">
+                                <input type="text"
+                                       class="form-control form-control-lg form-control-solid"
+                                       value="{{ personal.joining_date }}" readonly/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-xl-3 col-lg-3 col-form-label">Qualification</label>
+                        <div class="col-lg-9 col-xl-6">
+                            <div class="input-group input-group-lg input-group-solid">
+                                <input type="text"
+                                       class="form-control form-control-lg form-control-solid"
+                                       value="{{ personal.qualification }}" readonly/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <label class="col-xl-3"></label>
+                        <div class="col-lg-9 col-xl-6">
+                            <h5 class="font-weight-bold mt-10 mb-6">Address Info</h5>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-xl-3 col-lg-3 col-form-label">Address</label>
+                        <div class="col-lg-9 col-xl-6">
+                            <textarea class="form-control form-control-solid" id="kt_autosize_1" rows="3"
+                                      readonly>{{ personal.address }}</textarea>
+                        </div>
+                    </div>
+                </div>
+                <!--end::Body-->
+            </form>
+            <!--end::Form-->
+        </div>
+    </div>
+{% endblock %}
+<!--end::Content-->
+
+</body>
+</html>

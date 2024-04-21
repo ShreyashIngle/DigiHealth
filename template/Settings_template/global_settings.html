@@ -1,0 +1,176 @@
+{% extends "index.html" %}
+{% comment %} Template tag base:start {% endcomment %}
+
+{% load static %}
+{% block title %}Settings{% endblock %}
+{% block header_name %}Global{% endblock %}
+{% block header_name_sub %}
+    <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
+        <li class="breadcrumb-item">
+            <a href="" class="text-muted">Admin</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="" class="text-muted">Settings</a>
+        </li>
+    </ul>
+{% endblock header_name_sub %}
+
+{% comment %} Template tag base:end {% endcomment %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+{% block content %}
+    <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+
+
+        <!--begin::Entry-->
+        <div class="d-flex flex-column-fluid">
+            <!--begin::Container-->
+            <div class=" container ">
+                <!--begin::Card-->
+                <form method="post" id="global_settings">
+                    {% csrf_token %}
+                    <div class="card card-custom mb-4">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <h5 class="card-label">
+                                    <i class="fas fa-cogs icon-lg mr-1"></i>
+                                    Site Info
+                                </h5>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <h3 class="font-size-lg text-dark font-weight-bold mb-6">1. Basic Info:</h3>
+                            <div class="mb-15">
+                                <div class="form-group row">
+                                    <label class="col-lg-3 col-form-label text-right">Hospital Name</label>
+                                    <div class="col-lg-6">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend"><span class="input-group-text"><i
+                                                    class="fas fa-building"></i></span></div>
+                                            <input type="text" class="form-control"
+                                                   placeholder="Hospital" name="hospital_name"
+                                                   value="{{ main_list.hospital }}"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-lg-3 col-form-label text-right">Visible Name</label>
+                                    <div class="col-lg-6">
+                                        <input type="text" class="form-control" placeholder="HMS"
+                                               name="visible" value="{{ main_list.visible }}"/>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-lg-3 col-form-label text-right">Contact No</label>
+                                    <div class="col-lg-6">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend"><span class="input-group-text"><i
+                                                    class="fas fa-phone"></i></span></div>
+                                            <input type="tel" class="form-control"
+                                                   placeholder="+91 12345 67890" name="contact"
+                                                   value="{{ main_list.contact }}"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-lg-3 col-form-label text-right">Email</label>
+                                    <div class="col-lg-6">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend"><span class="input-group-text"><i
+                                                    class="fas fa-at"></i></span></div>
+                                            <input type="text" class="form-control"
+                                                   placeholder="feedback@digihealth.com" name="email"
+                                                   value="{{ main_list.email }}"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <h3 class="font-size-lg text-dark font-weight-bold mb-6">2. Address Info:</h3>
+                            <div class="mb-3">
+                                <div class="form-group row">
+                                    <label class="col-lg-3 col-form-label text-right">Address</label>
+                                    <div class="col-lg-6">
+                                                    <textarea class="form-control" id="kt_autosize_1"
+                                                              placeholder="District 6 1352 W. Olive Ave, Fresno 559-488-4020"
+                                                              rows="3" name="address"
+                                                              value="{{ main_list.address }}">{{ main_list.address }}</textarea>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <h3 class="font-size-lg text-dark font-weight-bold mb-6">3. Footer Info:</h3>
+                            <div class="mb-3">
+                                <div class="form-group row">
+                                    <label class="col-lg-3 col-form-label text-right">Facebook Page</label>
+                                    <div class="col-lg-6">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend"><span class="input-group-text"><i class="fab fa-facebook-f"></i></span></div>
+                                            <input type="text" class="form-control"
+                                                   placeholder="https://facebook.com/" name="facebook"
+                                                   value="{{ main_list.facebook }}"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-lg-3 col-form-label text-right">About Page</label>
+                                    <div class="col-lg-6">
+                                        <input type="text" class="form-control"
+                                               placeholder="https://digihealth/about" name="link1"
+                                               value="{{ main_list.link1 }}"/>
+                                        <span class="form-text text-muted">Please enter your about page link</span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-lg-3 col-form-label text-right">Team Page</label>
+                                    <div class="col-lg-6">
+                                        <input type="text" class="form-control"
+                                               placeholder="https://digihealth/team" name="link2"
+                                               value="{{ main_list.link2 }}"/>
+                                        <span class="form-text text-muted">Please enter your team page link</span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-lg-3 col-form-label text-right">Contact</label>
+                                    <div class="col-lg-6">
+                                        <input type="text" class="form-control"
+                                               placeholder="https://digihealth/contact" name="link3"
+                                               value="{{ main_list.link3 }}"/>
+                                        <span class="form-text text-muted">Please enter your contact page link</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="card-footer">
+                            <div class="d-flex justify-content-end">
+                                <button type="submit" class="btn btn-light-primary btn-lg mr-2 font-weight-bold">
+                                    Update
+                                </button>
+                                <button type="reset" class="btn btn-light-danger btn-lg font-weight-bold">Reset</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <!--end::Card-->
+
+            </div>
+            <!--end::Container-->
+        </div>
+        <!--end::Entry-->
+    </div>
+{% endblock content %}
+</body>
+
+{% block js %}
+    <script src="{% static "js/validation/global_settings_validation.js" %}"></script>
+    <script src="{% static "js/ajax/global_settings.js" %}"></script>
+{% endblock js %}
+</html>

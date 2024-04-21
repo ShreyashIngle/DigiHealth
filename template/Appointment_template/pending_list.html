@@ -1,0 +1,117 @@
+{% extends "index.html" %}
+{% comment %} Template tag base:start {% endcomment %}
+
+{% load static %}
+{% block title %}Appointment List{% endblock %}
+{% block header_name %}Appointment List{% endblock %}
+{% block header_name_sub %}
+    <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
+        <li class="breadcrumb-item">
+            <a href="" class="text-muted">List</a>
+        </li>
+    </ul>
+{% endblock header_name_sub %}
+
+{% comment %} Template tag base:end {% endcomment %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+{% block content %}
+    <div class="content  d-flex flex-column flex-column-fluid" id="kt_content">
+
+        <div class="d-flex flex-column-fluid">
+            <!--begin::Container-->
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card card-custom" id="table">
+                            <div class="card-header ">
+                                <div class="card-title">
+                                    <h5 class="card-label">
+                                        <i class="fas fa-list icon-lg mr-1"></i>
+                                        Pending Appointment List
+                                    </h5>
+                                </div>
+                                <div class="card-toolbar">
+                                    <a href="javaScript:void(0)" class="btn btn-light-warning btn-icon btn-lg mr-2"
+                                       id="export_print" data-toggle="tooltip" data-placement="top" title="Print"
+                                       data-theme="dark">
+                                        <i class="fas fa-print"></i>
+                                    </a>
+                                    <a href="javaScript:void(0)" class="btn btn-light-primary btn-icon btn-lg mr-2"
+                                       id="export_pdf" data-toggle="tooltip" data-placement="top" title="PDF"
+                                       data-theme="dark">
+                                        <i class="fas fa-file-pdf"></i>
+                                    </a>
+                                    <a href="javaScript:void(0)" class="btn btn-light-success btn-icon btn-lg mr-2"
+                                       id="export_excel" data-toggle="tooltip" data-placement="top" title="Excel"
+                                       data-theme="dark">
+                                        <i class="fas fa-file-excel"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <table class="table table-separate table-head-custom text-center"
+                                       id="pending_appointment">
+                                    <thead>
+                                    <tr>
+                                        <th>Appointment ID</th>
+                                        <th>Doctor Name</th>
+                                        <th>Patient Name</th>
+                                        <th>Date</th>
+                                        <th>Time Slot</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for item in appointment_list %}
+                                        <tr>
+                                            <td>{{ item.id }}</td>
+                                            <td>{{ item.doctor }}</td>
+                                            <td>{{ item.patient }}</td>
+                                            <td>{{ item.appointment_date|date:'Y/m/d' }}</td>
+                                            <td>{{ item.time_slot|default:None }}</td>
+                                            <td>
+                                                <span class="label label-success label-inline label-lg font-weight-bold mr-2">{{ item.status }}</span>
+                                            </td>
+                                            <td>
+                                                {% csrf_token %}
+                                                <button class="btn btn-icon btn-outline-info btn-sm mr-2"
+                                                        data-toggle="tooltip" data-placement="top" title="Make Confirm"
+                                                        data-theme="dark" id="confirm_appointment"
+                                                        data-id="{{ item.id }}"><i class="fas fa-check"></i>
+                                                </button>
+                                                <button id="delete_appointment" data-id="{{ item.id }}"
+                                                        class="btn btn-icon btn-outline-danger btn-sm mr-2"
+                                                        data-toggle="tooltip" data-placement="top" title="Delete"
+                                                        data-theme="dark" ><i class="fas fa-trash"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}
+</body>
+{% block js %}
+    <script src="{% static "js/table/pending_list.js" %}"></script>
+    <script src="{% static "js/ajax/appointment.js" %}"></script>
+{% endblock js %}
+
+</html>

@@ -1,0 +1,218 @@
+{% extends "index.html" %}
+{% comment %} Template tag base:start {% endcomment %}
+
+{% load static %}
+{% block title %}Schedule List{% endblock %}
+{% block header_name %}Schedule List{% endblock %}
+{% block header_name_sub %}
+    <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
+        <li class="breadcrumb-item">
+            <a href="" class="text-muted">List</a>
+        </li>
+    </ul>
+{% endblock header_name_sub %}
+
+{% comment %} Template tag base:end {% endcomment %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+{% block content %}
+    <div class="content  d-flex flex-column flex-column-fluid" id="kt_content">
+        <div class="d-flex flex-column-fluid">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card card-custom">
+                            <div class="card-header ">
+                                <div class="card-title">
+                                    <h5 class="card-label">
+                                        <i class="fas fa-clock icon-lg mr-1"></i>
+                                        Schedule List
+                                    </h5>
+                                </div>
+                                {% if request.user.role == 1 or request.user.role == 3 %}
+                                    <div class="card-toolbar">
+                                        <a href="javaScript:void(0)" class="btn btn-light-warning btn-icon btn-lg mr-2"
+                                           id="export_print" data-toggle="tooltip" data-placement="top" title="Print"
+                                           data-theme="dark">
+                                            <i class="fas fa-print"></i>
+                                        </a>
+                                        <a href="javaScript:void(0)" class="btn btn-light-primary btn-icon btn-lg mr-2"
+                                           id="export_pdf" data-toggle="tooltip" data-placement="top" title="PDF"
+                                           data-theme="dark">
+                                            <i class="fas fa-file-pdf"></i>
+                                        </a>
+                                        <a href="javaScript:void(0)" class="btn btn-light-success btn-icon btn-lg mr-2"
+                                           id="export_excel" data-toggle="tooltip" data-placement="top" title="Excel"
+                                           data-theme="dark">
+                                            <i class="fas fa-file-excel"></i>
+                                        </a>
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="card-body">
+                                {% csrf_token %}
+                                <table class="table table-separate table-head-custom text-center" id="schedule">
+                                    <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th style="display: none !important;">Doctor ID</th>
+                                        <th>Doctor</th>
+                                        <th>Consultation Fees</th>
+                                        <th>Week Day</th>
+                                        <th>Time Start</th>
+                                        <th>Time End</th>
+                                        {% if request.user.role == 1 or request.user.role == 3 %}
+                                            <th>Action</th>
+                                        {% endif %}
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for item in schedules %}
+                                        <tr>
+                                            <td>{{ item.id }}</td>
+                                            <td>{{ item.doctor_id }}</td>
+                                            <td>{{ item.doctor }}</td>
+                                            <td>{{ item.fees }}</td>
+                                            <td>{{ item.week_day }}</td>
+                                            <td>{{ item.start_time|time:'g:i A' }}</td>
+                                            <td>{{ item.end_time|time:'g:i A' }}</td>
+                                            {% if request.user.role == 1 or request.user.role == 3 %}
+                                                <td>
+                                                    <button id="schedule_update_button" data-id="{{ item.id }}"
+                                                            class="btn btn-icon btn-outline-success btn-sm mr-2"
+                                                            type="button" data-toggle="tooltip"
+                                                            data-placement="top" title="Edit"
+                                                            data-theme="dark">
+                                                        <i class="fas fa-pen"></i>
+                                                    </button>
+                                                    <button class="btn btn-icon btn-outline-danger btn-sm btn-del mr-2"
+                                                            type="button" data-id="{{ item.id }}"
+                                                            id="schedule_delete_button" data-toggle="tooltip"
+                                                            data-placement="top" title="Delete"
+                                                            data-theme="dark">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </td>
+                                            {% endif %}
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Update Schedule Modal -->
+    <div class="modal fade" id="update_schedule_modal" data-backdrop="static" tabindex="-1" role="dialog"
+         aria-labelledby="edit" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <form method="POST" class="form" id="update_schedule">
+                    {% csrf_token %}
+                    <div class="modal-header">
+                        <h5 class="modal-title">
+                            <i class="fas fa-edit icon-lg mr-1"></i>
+                            Edit Schedule
+                        </h5>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group row justify-content-center">
+                            <input type="hidden" name="schedule_id"/>
+                            <div class="col-lg-10">
+                                <label>Doctor *</label>
+                                <select class="form-control selectpicker" data-live-search="true"
+                                        data-size="4" name="update_doctor" title="Nothing Selected" id="doctor_list">
+                                    {% for item in doctor_list %}
+                                        <option value="{{ item.id }}">{{ item.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row justify-content-center">
+                            <div class="col-lg-10">
+                                <label>Consultation Fees *</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-rupee-sign"></i>
+                                        </span>
+                                    </div>
+                                    <input type="number" class="form-control" name="update_fees">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row justify-content-center">
+                            <div class="col-lg-10">
+                                <label>Week Day *</label>
+                                <select class="form-control selectpicker" data-live-search="true"
+                                        data-size="4" data-dropup-auto="false" name="update_weekday"
+                                        title="Nothing Selected" id="weekday">
+                                    <option value="Sunday">Sunday</option>
+                                    <option value="Monday">Monday</option>
+                                    <option value="Tuesday">Tuesday</option>
+                                    <option value="Wednesday">Wednesday</option>
+                                    <option value="Thursday">Thursday</option>
+                                    <option value="Friday">Friday</option>
+                                    <option value="Saturday">Saturday</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row justify-content-center">
+                            <div class="col-lg-10">
+                                <label>Time Slot *</label>
+                                <div class="form-group row">
+                                    <div class="col-lg-6 mb-2">
+                                        <div class="input-group timepicker">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-clock"></i>
+                                                </span>
+                                            </div>
+                                            <input class="form-control" type="text"
+                                                   name="update_start_time" id="update_start_timepicker" readonly/>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="input-group timepicker">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-clock"></i>
+                                                </span>
+                                            </div>
+                                            <input class="form-control" type="text"
+                                                   name="update_end_time" id="update_end_timepicker" readonly/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-light-primary btn-lg mr-2 font-weight-bold">Update</button>
+                        <button type="button" class="btn btn-light-danger btn-lg mr-2 font-weight-bold"
+                                data-dismiss="modal">Close
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+</body>
+{% block js %}
+    <script src="{% static "js/validation/update_schedule_validation.js" %}"></script>
+    <script src="{% static "js/ajax/schedule.js" %}"></script>
+    <script src="{% static "js/table/schedule_list.js" %}"></script>
+{% endblock js %}
+</html>

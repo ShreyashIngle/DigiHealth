@@ -1,0 +1,349 @@
+{% extends "index.html" %}
+{% comment %} Template tag base:start {% endcomment %}
+
+{% load static %}
+{% block title %}Appointment List{% endblock %}
+{% block header_name %}Appointment List{% endblock %}
+{% block header_name_sub %}
+    <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
+        <li class="breadcrumb-item">
+            <a href="" class="text-muted">List</a>
+        </li>
+    </ul>
+{% endblock header_name_sub %}
+
+{% comment %} Template tag base:end {% endcomment %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+{% block content %}
+    <div class="content  d-flex flex-column flex-column-fluid" id="kt_content">
+        <div class="d-flex flex-column-fluid">
+            <!--begin::Container-->
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        {% if request.user.role == 1 or request.user.role == 2 or request.user.role == 3 %}
+                            <div class="card card-custom mb-2">
+                                <div class="card-header ">
+                                    <div class="card-title">
+                                        <h5 class="card-label">
+                                            <i class="fas fa-edit icon-lg mr-1"></i>
+                                            Select Date
+                                        </h5>
+                                    </div>
+                                </div>
+                                <form method="POST" id="filter_app">
+                                    {% csrf_token %}
+                                    <div class="card-body">
+                                        <div class="form-group row flex-row justify-content-center">
+                                            <div class="col-lg-4">
+                                                <label>Date</label>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        <i class="fas fa-calendar-check"></i>
+                                                    </span>
+                                                    </div>
+                                                    <input type="text" class="form-control" name="appointment_date"
+                                                           id="filter_appointement_date">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer">
+                                        <div class="d-flex justify-content-end">
+                                            <button type="submit"
+                                                    class="btn btn-light-success btn-lg mr-2 font-weight-bold">Filter
+                                            </button>
+                                            <button type="button"
+                                                    class="btn btn-light-danger btn-lg mr-2 font-weight-bold"
+                                                    id="reset_table">Reset Table
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        {% endif %}
+                        <div class="card card-custom">
+                            <div class="card-header ">
+                                <div class="card-title">
+                                    <h5 class="card-label">
+                                        <i class="fas fa-list icon-lg mr-1"></i>
+                                        Appointment List
+                                    </h5>
+                                </div>
+                                <div class="card-toolbar">
+                                    <a href="javaScript:void(0)" class="btn btn-light-warning btn-icon btn-lg mr-2"
+                                       id="export_print" data-toggle="tooltip" data-placement="top" title="Print"
+                                       data-theme="dark">
+                                        <i class="fas fa-print"></i>
+                                    </a>
+                                    <a href="javaScript:void(0)" class="btn btn-light-primary btn-icon btn-lg mr-2"
+                                       id="export_pdf" data-toggle="tooltip" data-placement="top" title="PDF"
+                                       data-theme="dark">
+                                        <i class="fas fa-file-pdf"></i>
+                                    </a>
+                                    <a href="javaScript:void(0)" class="btn btn-light-success btn-icon btn-lg mr-2"
+                                       id="export_excel" data-toggle="tooltip" data-placement="top" title="Excel"
+                                       data-theme="dark">
+                                        <i class="fas fa-file-excel"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <table class="table table-separate table-head-custom text-center" id="appointment">
+                                    <thead>
+                                    <tr>
+                                        <th>Appointment ID</th>
+                                        <th>Doctor Name</th>
+                                        <th>Patient Name</th>
+                                        <th>Date</th>
+                                        <th style="display: none !important;">Fees</th>
+                                        <th>Time Slot</th>
+                                        <th>Status</th>
+                                        {% if request.user.role == 1 or request.user.role == 3 %}
+                                            <th>Action</th>
+                                        {% endif %}
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for item in appointment_list %}
+                                        <tr>
+                                            <td>{{ item.id }}</td>
+                                            <td>{{ item.doctor }}</td>
+                                            <td>{{ item.patient }}</td>
+                                            <td>{{ item.appointment_date|date:'Y-m-d' }}</td>
+                                            <td style="display: none !important;">{{ item.fees }}</td>
+                                            <td>{{ item.time_slot|default:None }}</td>
+                                            <td>
+                                                {% if item.status == 'Confirmed' %}
+                                                    <span class="label label-success label-inline label-lg font-weight-bold mr-2">Confirmed</span>
+                                                {% endif %}
+                                                {% if item.status == 'Closed' %}
+                                                    <span class="label label-primary label-inline label-lg font-weight-bold mr-2">Closed</span>
+                                                {% endif %}
+                                            </td>
+                                            {% if request.user.role == 1 or request.user.role == 3 %}
+                                                <td>
+                                                    {% if item.status == 'Confirmed' %}
+                                                        <button id="close_appointment" data-id="{{ item.id }}"
+                                                                class="btn btn-icon btn-outline-info btn-sm mr-2"
+                                                                data-toggle="tooltip" data-placement="top"
+                                                                title="Make Closed"
+                                                                data-theme="dark"><i class="fas fa-check"></i></button>
+
+                                                        <button id="appointment_update_button"
+                                                                data-pid="{{ item.patient_id }}"
+                                                                data-did="{{ item.doctor_id }}"
+                                                                data-status="{{ item.status }}" class="btn btn-icon btn-outline-success
+                                                            btn-sm mr-2"
+                                                                data-toggle="tooltip" data-placement="top" title="Edit"
+                                                                data-theme="dark"><i class="fas fa-pen"></i></button>
+                                                    {% endif %}
+
+                                                    <button id="delete_appointment" data-id="{{ item.id }}"
+                                                            class="btn btn-icon btn-outline-danger btn-sm mr-2"
+                                                            data-toggle="tooltip" data-placement="top" title="Delete"
+                                                            data-theme="dark" id="delete"><i class="fas fa-trash"></i>
+                                                    </button>
+                                                </td>
+                                            {% endif %}
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Pending Appointment Update Modal-->
+    <div class="modal fade" id="update_pending_appointment_modal" data-backdrop="static" tabindex="-1" role="dialog"
+         aria-labelledby="edit" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <form method="POST" id="update_appointment">
+                    {% csrf_token %}
+                    <div class="modal-header ">
+                        <h5 class="modal-title">
+                            <i class="fas fa-edit icon-lg mr-1"></i>
+                            Edit Appointment
+                        </h5>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" name="appointment_id"/>
+                        <div class="form-group row justify-content-center">
+                            <div class="col-lg-10">
+                                <label>Patient *</label>
+                                <select class="form-control selectpicker" data-live-search="true"
+                                        data-size="4" name="update_patient" id="patient" title="Nothing selected">
+                                    {% for item in patient_list %}
+                                        <option value="{{ item.id }}">{{ item.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row justify-content-center">
+                            <div class="col-lg-10">
+                                <label>Doctor *</label>
+                                <select class="form-control selectpicker" data-live-search="true"
+                                        data-size="4" data-dropup-auto="false" name="update_doctor"
+                                        id="update_doctor_list" title="Nothing selected">
+                                    {% for item in doctor_list %}
+                                        <option value="{{ item.id }}">{{ item.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row justify-content-center">
+                            <div class="col-lg-10">
+                                <label>Appointment Date *</label>
+                                <div class="input-group date mb-2">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-calendar-plus"></i>
+                                        </span>
+                                    </div>
+                                    <input type="text" class="form-control" name="update_appointment_date"
+                                           id="update_appointment_datepicker" readonly>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row justify-content-center">
+                            <div class="col-lg-10">
+                                <label>Time Slot *</label>
+                                <select class="form-control selectpicker"
+                                        data-size="4" data-dropup-auto="false" name="update_time_slot"
+                                        id="update_timeslot" title="Nothing selected" data-live-search="true">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row justify-content-center">
+                            <div class="col-lg-10">
+                                <label>Consultation Fees</label>
+                                <input type="number" class="form-control" name="update_fees" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group row justify-content-center">
+                            <div class="col-lg-10">
+                                <label>Status</label>
+                                <select class="form-control selectpicker"
+                                        data-size="4" name="update_status" title="Nothing selected" id="status">
+                                    <option value="Pending">Pending</option>
+                                    <option value="Confirmed">Confirm</option>
+                                    <option value="Closed">Close</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-light-primary btn-lg mr-2 font-weight-bold">Update</button>
+                        <button type="button" class="btn btn-light-danger btn-lg mr-2 font-weight-bold"
+                                data-dismiss="modal">Close
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+</body>
+{% block js %}
+    {% if request.user.role == 1 or request.user.role == 2 or request.user.role == 3 %}
+        <script src="{% static "js/validation/update_appointment_validation.js" %}"></script>
+        <script src="{% static "js/ajax/appointment.js" %}"></script>
+        <script src="{% static "js/table/appointment_list.js" %}"></script>
+    {% endif %}
+    {% if request.user.role == 4 %}
+        <script type="text/javascript">
+
+            table = $("#appointment").DataTable({
+
+                searching: true,
+
+                responsive: true,
+
+                lengthMenu: [5, 10, 25, 50],
+
+                pageLength: 5,
+
+                language: {
+                    'lengthMenu': 'Display _MENU_',
+                },
+
+                ordering: false,
+
+                buttons: [{
+                    extend: 'print',
+                    exportOptions: {
+                        columns: [0, 1, 2, 3, 4, 5, 6]
+                    }
+                },
+
+                    {
+                        extend: 'pdfHtml5',
+                        exportOptions: {
+                            columns: [0, 1, 2, 3, 4, 5, 6]
+                        },
+                        customize: function (doc) {
+                            doc.styles.title = {
+                                fontSize: '35',
+                                alignment: 'center'
+                            }
+                            doc.styles.tableHeader = {
+                                fillColor: '#2D4154',
+                                color: 'white',
+                                fontSize: '12',
+                                bold: 2,
+                                alignment: 'center'
+                            },
+                                doc.defaultStyle.alignment = 'center';
+                        }
+                    },
+
+                    {
+                        extend: 'excelHtml5',
+                        exportOptions: {
+                            columns: [0, 1, 2, 3, 4, 5, 6]
+                        }
+                    },
+                ],
+
+                columnDefs: [
+                    {
+                        "targets": 4,
+                        "visible": false,
+                        "searchable": false
+                    },
+                ],
+            });
+            $('#export_print').on('click', function (e) {
+                e.preventDefault();
+                table.button(0).trigger();
+            });
+
+            $('#export_pdf').on('click', function (e) {
+                e.preventDefault();
+                table.button(1).trigger();
+            });
+
+            $('#export_excel').on('click', function (e) {
+                e.preventDefault();
+                table.button(2).trigger();
+            });
+        </script>
+    {% endif %}
+
+{% endblock js %}
+
+</html>

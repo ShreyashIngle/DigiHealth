@@ -1,0 +1,176 @@
+{% extends "index.html" %}
+{% comment %} Template tag base:start {% endcomment %}
+
+{% load static %}
+{% block title %}Category{% endblock %}
+{% block header_name %}Category{% endblock %}
+{% block header_name_sub %}
+    <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
+        <li class="breadcrumb-item">
+            <a href="" class="text-muted">Add</a>
+        </li>
+    </ul>
+{% endblock header_name_sub %}
+
+{% comment %} Template tag base:end {% endcomment %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+{% block content %}
+    <div class="content  d-flex flex-column flex-column-fluid" id="kt_content">
+        <div class="d-flex flex-column-fluid">
+            <!--begin::Container-->
+            <div class="container">
+                <div class="row">
+                    {% if request.user.role == 1 %}
+                        <div class="col-lg-5 mb-2">
+                            <form id="create_category" method="POST">
+                                {% csrf_token %}
+                                <div class="card card-custom">
+                                    <div class="card-header">
+                                        <div class="card-title">
+                                            <h5 class="card-label">
+                                                <i class="fas fa-edit icon-lg mr-1"></i>
+                                                Add Category
+                                            </h5>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="form-group row">
+                                            <div class="col-lg-12">
+                                                <label>Category Name *</label>
+                                                <input type="text" class="form-control" name="category"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer">
+                                        <div class="d-flex justify-content-end">
+                                            <button type="submit"
+                                                    class="btn btn-light-success btn-lg mr-2 font-weight-bold">Save
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    {% endif %}
+                    <div class="{% if request.user.role == 1 %}col-lg-7{% endif %}{% if request.user.role == 2 or request.user.role == 3 %}col-lg-5{% endif %}">
+                        <div class="card card-custom">
+                            <div class="card-header ">
+                                <div class="card-title">
+                                    <h5 class="card-label">
+                                        <i class="fas fa-list icon-lg mr-1"></i>
+                                        Category List
+                                    </h5>
+                                </div>
+                                <div class="card-toolbar">
+                                    <a href="javaScript:void(0)" class="btn btn-light-warning btn-icon btn-lg mr-2"
+                                       id="export_print" data-toggle="tooltip" data-placement="top" title="Print"
+                                       data-theme="dark">
+                                        <i class="fas fa-print"></i>
+                                    </a>
+                                    <a href="javaScript:void(0)" class="btn btn-light-primary btn-icon btn-lg mr-2"
+                                       id="export_pdf" data-toggle="tooltip" data-placement="top" title="PDF"
+                                       data-theme="dark">
+                                        <i class="fas fa-file-pdf"></i>
+                                    </a>
+                                    <a href="javaScript:void(0)" class="btn btn-light-success btn-icon btn-lg mr-2"
+                                       id="export_excel" data-toggle="tooltip" data-placement="top" title="Excel"
+                                       data-theme="dark">
+                                        <i class="fas fa-file-excel"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <!--begin: Datatable-->
+                                <table class="table table-separate table-head-custom" id="category">
+                                    <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Name</th>
+                                        {% if request.user.role == 1 %}
+                                            <th>Action</th>
+                                        {% endif %}
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for cat in category_list %}
+                                        <tr>
+                                            <td>{{ cat.id }}</td>
+                                            <td>{{ cat.category }}</td>
+
+                                            {% if request.user.role == 1 %}
+
+                                                <td>
+                                                    {% csrf_token %}
+                                                    <button class="btn btn-icon btn-outline-success btn-sm mr-2"
+                                                            id="category-edit" data-id="{{ cat.id }}"><i
+                                                            class="fas fa-pen"></i></button>
+                                                    <button class="btn btn-icon btn-outline-danger btn-sm btn-del mr-2"
+                                                            type="button" data-info="{{ cat.id }}"
+                                                            id="delete_category">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </td>
+                                            {% endif %}
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                                <!--end: Datatable-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="category-modal" data-backdrop="static" tabindex="-1" role="dialog"
+         aria-labelledby="edit" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <form method="POST" id="update_category">
+                    {% csrf_token %}
+                    <div class="modal-header ">
+                        <h5 class="modal-title">
+                            <i class="fas fa-edit icon-lg mr-1"></i>
+                            Edit Category
+                        </h5>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group row">
+                            <div class="col-lg-12">
+                                <input type="hidden" class="form-control" name="id"/>
+                                <label>Category Name *</label>
+                                <input type="text" class="form-control" name="update_category"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-light-primary btn-lg mr-2 font-weight-bold">Update</button>
+                        <button type="button" class="btn btn-light-danger btn-lg mr-2 font-weight-bold"
+                                data-dismiss="modal">Close
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock content %}%
+</body>
+{% block js %}
+    {% if request.user.role == 1 %}
+        <script src="{% static "js/validation/category_validation.js" %}"></script>
+    {% endif %}
+    <script src="{% static "js/table/category_list.js" %}"></script>
+    <script src="{% static "js/ajax/category.js" %}"></script>
+{% endblock js %}
+</html>
