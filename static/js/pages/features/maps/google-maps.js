@@ -8,12 +8,12 @@ var KTGoogleMapsDemo = function() {
     var demo1 = function() {
         var map = new GMaps({
             div: '#kt_gmap_1',
-            lat: 18.5204,
-            lng: 73.8567
+            lat: 22.3068135186707,
+            lng: 70.76779844914232
         });
         map.addMarker({
-            lat: 18.5204,
-            lng: 73.8567,
+            lat: 22.3068135186707,
+            lng: 70.76779844914232,
             title: 'Digihealth Hospital',
             click: function(e) {
                 alert('You clicked in this marker');
