@@ -5,11 +5,11 @@
 {% block title %}Prescription List{% endblock %}
 {% block header_name %}Prescription List{% endblock %}
 {% block header_name_sub %}
-    <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
-        <li class="breadcrumb-item">
-            <a href="" class="text-muted">List</a>
-        </li>
-    </ul>
+<ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
+    <li class="breadcrumb-item">
+        <a href="" class="text-muted">List</a>
+    </li>
+</ul>
 {% endblock header_name_sub %}
 
 {% comment %} Template tag base:end {% endcomment %}
@@ -23,7 +23,7 @@
 </head>
 
 <body>
-{% block content %}
+    {% block content %}
     <div class="content  d-flex flex-column flex-column-fluid" id="kt_content">
         <div class="d-flex flex-column-fluid">
             <!--begin::Container-->
@@ -45,18 +45,21 @@
                                     <div class="form-group row flex-row justify-content-center">
                                         <div class="col-lg-4">
                                             <label>Doctor *</label>
+
                                             <select class="form-control selectpicker" data-live-search="true"
-                                                    data-size="4" data-dropup-auto="false" name="doctor">
-                                                <option value="">Select</option>
+                                                data-size="4" name="doctor" title="Nothing selected">
+                                                {% for item in doctor_list %}
+                                                <option value="{{ item.id }}">{{ item.name }}</option>
+                                                {% endfor %}
                                             </select>
                                         </div>
                                         <div class="col-lg-4">
                                             <label>Patient *</label>
                                             <select class="form-control selectpicker" data-live-search="true"
-                                                    data-size="4" name="patient">
-                                                <option value="">Select</option>
-                                                <option value="A+">A+</option>
-                                                <option value="A-">A-</option>
+                                                data-size="4" name="patient" title="Nothing selected">
+                                                {% for item in patient_list %}
+                                                <option value="{{ item.id }}">{{ item.name }}</option>
+                                                {% endfor %}
                                             </select>
                                         </div>
                                     </div>
@@ -64,7 +67,7 @@
                                 <div class="card-footer">
                                     <div class="d-flex justify-content-end">
                                         <button type="button"
-                                                class="btn btn-light-success btn-lg mr-2 font-weight-bold">Filter
+                                            class="btn btn-light-success btn-lg mr-2 font-weight-bold">Filter
                                         </button>
                                     </div>
                                 </div>
@@ -80,18 +83,18 @@
                                 </div>
                                 <div class="card-toolbar">
                                     <a href="javaScript:void(0)" class="btn btn-light-warning btn-icon btn-lg mr-2"
-                                       id="export_print" data-toggle="tooltip" data-placement="top" title="Print"
-                                       data-theme="dark">
+                                        id="export_print" data-toggle="tooltip" data-placement="top" title="Print"
+                                        data-theme="dark">
                                         <i class="fas fa-print"></i>
                                     </a>
                                     <a href="javaScript:void(0)" class="btn btn-light-primary btn-icon btn-lg mr-2"
-                                       id="export_pdf" data-toggle="tooltip" data-placement="top" title="PDF"
-                                       data-theme="dark">
+                                        id="export_pdf" data-toggle="tooltip" data-placement="top" title="PDF"
+                                        data-theme="dark">
                                         <i class="fas fa-file-pdf"></i>
                                     </a>
                                     <a href="javaScript:void(0)" class="btn btn-light-success btn-icon btn-lg mr-2"
-                                       id="export_excel" data-toggle="tooltip" data-placement="top" title="Excel"
-                                       data-theme="dark">
+                                        id="export_excel" data-toggle="tooltip" data-placement="top" title="Excel"
+                                        data-theme="dark">
                                         <i class="fas fa-file-excel"></i>
                                     </a>
                                 </div>
@@ -99,37 +102,53 @@
                             <div class="card-body">
                                 <table class="table table-separate table-head-custom text-center" id="prescription">
                                     <thead>
-                                    <tr>
-                                        <th>Prescription ID</th>
-                                        <th>Doctor Name</th>
-                                        <th>Patient Name</th>
-                                        <th>Date</th>
-                                        <th>Prescription</th>
-                                        <th>Action</th>
-                                    </tr>
+                                        <tr>
+                                            <th>Prescription ID</th>
+                                            <th>Doctor Name</th>
+                                            <th>Patient Name</th>
+                                            <th>Date</th>
+                                            <th hidden>Medicine Name</th>
+                                            <th hidden>Morning Doses</th>
+                                            <th hidden>Afternoon Dosage</th>
+                                            <th hidden>Night Dosage</th>
+                                            <th hidden>Remarks</th>
+                                            <th>Prescription</th>
+                                            <th>Action</th>
+                                        </tr>
                                     </thead>
                                     <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>Keiran</td>
-                                        <td>Gabbie Carter</td>
-                                        <td>20/10/2020</td>
-                                        <td>
-{#                                            <a href="#" class="btn btn-icon btn-outline-info btn-sm mr-2"#}
-{#                                               data-toggle="tooltip" data-placement="top" title="View Prescription"#}
-{#                                               data-theme="dark"><i class="fas fa-eye"></i></a>#}
-                                            Prescription Here....
-                                        </td>
-                                        <td>
-                                            <a href="{% url 'Prescription:add' %}"
-                                               class="btn btn-icon btn-outline-success btn-sm mr-2"
-                                               data-toggle="tooltip" data-placement="top" title="Edit"
-                                               data-theme="dark"><i class="fas fa-pen"></i></a>
-                                            <a href="#" class="btn btn-icon btn-outline-danger btn-sm mr-2"
-                                               data-toggle="tooltip" data-placement="top" title="Delete"
-                                               data-theme="dark" id="delete"><i class="fas fa-trash"></i></a>
-                                        </td>
-                                    </tr>
+                                        {% for item in prescription_all_list %}
+                                        <tr>
+
+                                            <td>{{ item.id }}</td>
+                                            <td>{{ item.doctor }}</td>
+                                            <td>{{ item.patient }}</td>
+                                            <td>{{ item.date|date:'Y-m-d' }}</td>
+                                            <td hidden>{{ item.medicine_name}}</td>
+                                            <td hidden>{{ item.morning_dosage }}</td>
+                                            <td hidden>{{ item.afternoon_dosage }}</td>
+                                            <td hidden>{{ item.night_dosage }}</td>
+                                            <td hidden>{{ item.remarks }}</td>
+
+                                            <td>
+                                                <button class="btn btn-icon btn-outline-warning btn-sm mr-2"
+                                                    type="button" id="show_prescription_details"
+                                                    data-info="{{ items.id }}" data-toggle="tooltip"
+                                                    data-placement="top" title="View Prescription" data-theme="dark">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                            </td>
+                                            <td>
+                                                <button id="qr_code_button"
+                                                    class="btn btn-icon btn-outline-success btn-sm mr-2" type="button"
+                                                    data-toggle="tooltip" data-id="{{ item.id }}" data-placement="top"
+                                                    title="Generate QR Code" data-theme="dark">
+                                                    <i class="fas fa-qrcode"></i>
+                                                </button>
+                                            </td>
+
+                                        </tr>
+                                        {% endfor %}
                                     </tbody>
                                 </table>
                             </div>
@@ -139,10 +158,186 @@
             </div>
         </div>
     </div>
-{% endblock content %}
+
+    <div class="modal fade" id="prescription_view_modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title">
+                        <i class="fas fa-user icon-lg mr-1"></i>
+                        Prescription Details
+                    </div>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <i aria-hidden="true" class="ki ki-close"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="text-center">
+                        <h4 class="font-weight-bold" id="name"></h4>
+                        <p>Prescription Details <span id=""></span></p>
+                    </div>
+                    <table class="table table-striped table-bordered">
+                        <tbody>
+                            <tr>
+                                <th>Appointment ID</th>
+                                <td colspan="3"><span id="id"></span></td>
+
+                            </tr>
+                            <tr>
+                                <th>Date</th>
+                                <td colspan="3"><span id="date"></span></td>
+                            </tr>
+                            <tr>
+                                <th>Doctor Name</th>
+                                <td colspan="3"><span id="doctor_name"></span></td>
+                            </tr>
+                            <tr>
+                                <th>Patient Name</th>
+                                <td colspan="3"><span id="patient_name"></span></td>
+                            </tr>
+                            <tr>
+                                <th>Medicine Name</th>
+                                <td colspan="3"><span id="medicine_name"></span></td>
+                            </tr>
+                            <tr>
+                                <th>morning Doses</th>
+                                <td colspan="3"><span id="morning_dosage"></span></td>
+                            </tr>
+                            <tr>
+                                <th>Afternoon Dosage</th>
+                                <td colspan="3"><span id="afternoon_dosage"></span></td>
+                            </tr>
+                            <tr>
+                                <th>Night Dosage</th>
+                                <td colspan="3"><span id="night_dosage"></span></td>
+                            </tr>
+                            <tr>
+                                <th>Remarks</th>
+                                <td colspan="3"><span id="remarks"></span></td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="prescription_qr" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title">
+                        <i class="fas fa-user icon-lg mr-1"></i>
+                        Prescription QR Code
+                    </div>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <i aria-hidden="true" class="ki ki-close"></i>
+                    </button>
+                </div>
+                <div class="modal-body" id="qr_code_modal_body">
+                    <div class="text-center">
+                        <h4 class="font-weight-bold">Prescription QR Code</h4>
+                        <div id="qr_code" class="d-flex justify-content-center align-items-center"  ></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div> 
+    {% endblock content %}
 </body>
 {% block js %}
-    <script src="{% static "js/table/prescription_list.js" %}"></script>
+<script src="{% static 'js/table/prescription_list.js' %}"></script>
+<!-- <script src="{% static 'js/ajax/prescription.js' %}"></script> -->
+<script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
+<script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+
+<script>
+$(document).on('click', '#qr_code_button', function (e) {
+    e.preventDefault();
+    
+    let currentRow = $(this).closest('tr');
+    let data = $('#prescription').DataTable().row(currentRow).data();
+
+    console.log(data); // Log the data to check its value
+
+    // Get the prescription details from the clicked row
+    var prescriptionDetails = {
+        // id: data[0], // Assuming the ID is in the first column
+        date: data[3], // Assuming the date is in the fourth column
+        doctor_name: data[1], // Assuming the doctor name is in the second column
+        patient_name: data[2], // Assuming the patient name is in the third column
+        medicine_name: data[4], // Assuming the medicine name is in the fifth column
+        morning_dosage: data[5], // Assuming the morning dosage is in the sixth column
+        afternoon_dosage: data[6], // Assuming the afternoon dosage is in the seventh column
+        night_dosage: data[7], // Assuming the night dosage is in the eighth column
+        // remarks: data[8] // Assuming the remarks are in the ninth column
+    };
+
+    console.log(prescriptionDetails); // Log the prescriptionDetails to check its value
+
+    // Generate the QR code
+    generateQRCode(prescriptionDetails);
+
+    return false;
+});
+
+$(document).on('click', '#show_prescription_details', function (e) {
+    e.preventDefault();
+    let currentrow = $(this).closest('tr');
+    let data;
+
+    if ($('#prescription').DataTable().row(this).child.isShown()) {
+        data = $('#prescription').DataTable().row(this).data();
+    } else {
+        data = $('#prescription').DataTable().row(currentrow).data();
+    }
+
+    $('#id').text(data[0]);
+    $('#date').text(data[1]);
+    $('#doctor_name').text(data[2]);
+    $('#patient_name').text(data[3]);
+    $('#medicine_name').text(data[4]);
+    $('#morning_dosage').text(data[5]);
+    $('#afternoon_dosage').text(data[6]);
+    $('#night_dosage').text(data[7]);
+    $('#remarks').text(data[8]);
+
+    $('#prescription_view_modal').modal('show');
+
+    return false;
+});
+
+
+function generateQRCode(prescriptionDetails) {
+    // Serialize the prescription details object to JSON
+    var jsonString = JSON.stringify(prescriptionDetails);
+
+    console.log(jsonString); // Log the jsonString to check its value
+
+    // Clear any existing content in the modal body
+    $('#qr_code').empty();
+
+    // Generate the QR code using qrcode.js
+    new QRCode(document.getElementById("qr_code"), {
+        text: jsonString,
+        width: 128,
+        height: 128
+    });
+
+    // Show the modal
+    $('#prescription_qr').modal('show');
+}
+
+</script>
 {% endblock js %}
 
 </html>

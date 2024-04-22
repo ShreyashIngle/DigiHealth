@@ -8,7 +8,7 @@ class Appointment(models.Model):
     class Meta:
         db_table = 'appointment'
 
-    id = models.AutoField(primary_key=True)
+    
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
     doctor = models.ForeignKey(Employee, on_delete=models.SET_NULL, null=True)
     appointment_date = models.DateField()

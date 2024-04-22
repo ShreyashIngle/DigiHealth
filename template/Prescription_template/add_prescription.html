@@ -48,17 +48,19 @@
                                         <div class="col-lg-4">
                                             <label>Doctor *</label>
                                             <select class="form-control selectpicker" data-live-search="true"
-                                                    data-size="4" data-dropup-auto="false" name="doctor">
-                                                <option value="">Select</option>
+                                                    data-size="4" name="doctor" title="Nothing selected">
+                                                {% for item in doctor_list %}
+                                                    <option value="{{ item.id }}">{{ item.name }}</option>
+                                                {% endfor %}
                                             </select>
                                         </div>
                                         <div class="col-lg-4">
                                             <label>Patient *</label>
                                             <select class="form-control selectpicker" data-live-search="true"
-                                                    data-size="4" name="patient">
-                                                <option value="">Select</option>
-                                                <option value="A+">A+</option>
-                                                <option value="A-">A-</option>
+                                                    data-size="4" name="patient" title="Nothing selected">
+                                                {% for item in patient_list %}
+                                                    <option value="{{ item.id }}">{{ item.name }}</option>
+                                                {% endfor %}
                                             </select>
                                         </div>
                                         <div class="col-lg-4">
@@ -69,7 +71,7 @@
                                                         <i class="fas fa-calendar-plus"></i>
                                                     </span>
                                                 </div>
-                                                <input type="text" class="form-control" id="kt_datepicker_3"
+                                                <input type="date" class="form-control" id="kt_datepicker_3"
                                                        name="date">
                                             </div>
                                         </div>
@@ -92,31 +94,31 @@
                                                                                 </span>
                                                                         </div>
                                                                         <input type="text" class="form-control"
-                                                                               placeholder="Medicine Name" name="medicine_name[]"/>
+                                                                               placeholder="Medicine Name" name="medicine_name"/>
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-lg-2">
                                                                     <div class="input-group">
                                                                         <input type="text" class="form-control"
-                                                                               placeholder="Morning" name=""/>
+                                                                               placeholder="Morning" name="morning_dosage"/>
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-lg-2">
                                                                     <div class="input-group">
                                                                         <input type="text" class="form-control"
-                                                                               placeholder="Afternoon"/>
+                                                                               placeholder="Afternoon" name="afternoon_dosage"/>
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-lg-2">
                                                                     <div class="input-group">
                                                                         <input type="text" class="form-control"
-                                                                               placeholder="Night"/>
+                                                                               placeholder="Night" name="night_dosage"/>
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-lg-2">
                                                                     <div class="input-group">
                                                                         <input type="text" class="form-control"
-                                                                               placeholder="Remarks"/>
+                                                                               placeholder="Remarks" name="remarks"/>
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-lg-1">
@@ -169,6 +171,7 @@
     <script src="{% static 'js/validation/validation/prescription_validation.js' %}"></script>
     <script src="{% static 'js/pages/crud/validation/widgets/bootstrap-timepicker.js' %}"></script>
     <script src="{% static 'js/validation/form-repeater.js' %}"></script>
+    <!-- <script src="{% static 'js/ajax/prescription.js' %}"></script> -->
 {% endblock js %}
 
 </html>
