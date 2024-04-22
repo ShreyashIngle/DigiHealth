@@ -357,7 +357,7 @@
                             </div>
                         </li>
                     {% endif %}
-                    {% if  request.user.role == 1 or request.user.role == 2 %}
+                    {% if  request.user.role == 1 or request.user.role == 2 or request.user.role == 3 or request.user.role == 4 %}
                         <li class="menu-item menu-item-submenu {% if view_name == 'Prescription:view' or view_name == 'Prescription:add'  %}menu-item-here menu-item-open{% endif %}"
                             aria-haspopup="true" data-menu-toggle="hover">
                             <a href="javascript:;" class="menu-link menu-toggle">
@@ -405,7 +405,7 @@
                                             </a>
                                         </li>
                                     {% endif %}
-                                    {% if request.user.role == 1 or request.user.role == 2 %}
+                                    {% if request.user.role == 1 or request.user.role == 2 or request.user.role == 3 or request.user.role == 4 %}
                                         <li class="menu-item {% if view_name == 'Prescription:view' %}menu-item-active{% endif %}"
                                             aria-haspopup="true">
                                             <a href="{% url 'Prescription:view' %}" class="menu-link">
