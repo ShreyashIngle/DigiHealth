@@ -256,7 +256,7 @@
 </body>
 {% block js %}
 <script src="{% static 'js/table/prescription_list.js' %}"></script>
-<script src="{% static 'js/ajax/prescription.js' %}"></script>
+<!-- <script src="{% static 'js/ajax/prescription.js' %}"></script> -->
 <script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
 <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
 
@@ -286,6 +286,32 @@ $(document).on('click', '#qr_code_button', function (e) {
 
     // Generate the QR code
     generateQRCode(prescriptionDetails);
+
+    return false;
+});
+
+$(document).on('click', '#show_prescription_details', function (e) {
+    e.preventDefault();
+    let currentrow = $(this).closest('tr');
+    let data;
+
+    if ($('#prescription').DataTable().row(this).child.isShown()) {
+        data = $('#prescription').DataTable().row(this).data();
+    } else {
+        data = $('#prescription').DataTable().row(currentrow).data();
+    }
+
+    $('#id').text(data[0]);
+    $('#date').text(data[1]);
+    $('#doctor_name').text(data[2]);
+    $('#patient_name').text(data[3]);
+    $('#medicine_name').text(data[4]);
+    $('#morning_dosage').text(data[5]);
+    $('#afternoon_dosage').text(data[6]);
+    $('#night_dosage').text(data[7]);
+    $('#remarks').text(data[8]);
+
+    $('#prescription_view_modal').modal('show');
 
     return false;
 });
