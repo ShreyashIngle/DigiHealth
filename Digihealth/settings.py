@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'Employee',
     'Patient',
     'Schedule',
+    'prescription',
     'Appointment',
     'Settings',
 ]
@@ -88,7 +89,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'healthcare',
         'USER': 'root',
-        'PASSWORD': 'ingle3104',
+        'PASSWORD': '',
         'HOST': 'localhost',
         'PORT': '3306',
     }
